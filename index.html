@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>FX Profit Calculator</title>
+  <style>
+    :root {
+      --bg-color: #f4f4f9;
+      --card-bg: #ffffff;
+      --text-color: #000000;
+      --button-bg: #007bff;
+      --button-hover: #0056b3;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg-color: #121212;
+        --card-bg: #1e1e1e;
+        --text-color: #ffffff;
+        --button-bg: #1a73e8;
+        --button-hover: #135abe;
+      }
+    }
+
+    body {
+      font-family: Arial, sans-serif;
+      background: var(--bg-color);
+      color: var(--text-color);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      margin: 0;
+      padding: 10px;
+    }
+    .calculator {
+      background: var(--card-bg);
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      width: 100%;
+      max-width: 400px;
+    }
+    .calculator h2 {
+      margin-bottom: 20px;
+      text-align: center;
+    }
+    .calculator label {
+      display: block;
+      margin-top: 10px;
+    }
+    .calculator input {
+      width: 100%;
+      padding: 10px;
+      margin-top: 5px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      font-size: 16px;
+      background-color: var(--card-bg);
+      color: var(--text-color);
+    }
+    .calculator button {
+      margin-top: 20px;
+      width: 100%;
+      padding: 12px;
+      background-color: var(--button-bg);
+      color: white;
+      border: none;
+      border-radius: 5px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+    .calculator button:hover {
+      background-color: var(--button-hover);
+    }
+    .result {
+      margin-top: 20px;
+      font-weight: bold;
+      text-align: center;
+      font-size: 18px;
+    }
+    @media (max-width: 480px) {
+      .calculator {
+        padding: 15px;
+      }
+      .calculator h2 {
+        font-size: 20px;
+      }
+      .calculator input,
+      .calculator button {
+        font-size: 14px;
+      }
+      .result {
+        font-size: 16px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="calculator">
+    <h2>FX Profit Calculator</h2>
+    <label for="usdAmount">USD Amount:</label>
+    <input type="number" id="usdAmount" placeholder="Enter USD amount" />
+
+    <label for="buyRate">Buy Rate:</label>
+    <input type="number" id="buyRate" placeholder="Enter buy rate" step="0.0001" />
+
+    <label for="sellRate">Sell Rate:</label>
+    <input type="number" id="sellRate" placeholder="Enter sell rate" step="0.0001" />
+
+    <button onclick="calculateProfit()">Calculate Profit</button>
+
+    <div class="result" id="result"></div>
+  </div>
+
+  <script>
+    function calculateProfit() {
+      const usd = parseFloat(document.getElementById("usdAmount").value);
+      const buyRate = parseFloat(document.getElementById("buyRate").value);
+      const sellRate = parseFloat(document.getElementById("sellRate").value);
+
+      if (isNaN(usd) || isNaN(buyRate) || isNaN(sellRate)) {
+        document.getElementById("result").textContent = "Please fill in all fields correctly.";
+        return;
+      }
+
+      const feePercent = 0.002; // 0.2%
+
+      const totalBuy = usd * buyRate;
+      const buyFee = totalBuy * feePercent;
+      const totalCost = totalBuy + buyFee;
+
+      const totalSell = usd * sellRate;
+      const sellFee = totalSell * feePercent;
+      const totalReceived = totalSell - sellFee;
+
+      const profit = totalReceived - totalCost;
+
+      document.getElementById("result").textContent = `Profit: ${profit.toFixed(2)} (after 0.2% buy & sell fees)`;
+    }
+  </script>
+</body>
+</html>
