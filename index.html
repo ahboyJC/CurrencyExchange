@@ -8,7 +8,7 @@
     body {
       font-family: Arial, sans-serif;
       background: #121212;
-      color: #f0f0f0;
+      color: #ffffff;
       display: flex;
       justify-content: center;
       align-items: center;
@@ -20,7 +20,7 @@
       background: #1e1e1e;
       padding: 20px;
       border-radius: 10px;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.6);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
       width: 100%;
       max-width: 400px;
     }
@@ -36,11 +36,11 @@
       width: 100%;
       padding: 10px;
       margin-top: 5px;
-      border: 1px solid #444;
+      border: 1px solid #555;
       border-radius: 5px;
       font-size: 16px;
-      background: #2c2c2c;
-      color: #f0f0f0;
+      background-color: #2a2a2a;
+      color: #fff;
     }
     .calculator button {
       margin-top: 20px;
@@ -65,8 +65,7 @@
     .breakdown {
       margin-top: 10px;
       font-size: 14px;
-      line-height: 1.5;
-      color: #ccc;
+      text-align: left;
     }
     @media (max-width: 480px) {
       .calculator {
@@ -126,11 +125,16 @@
       const totalReceived = totalSell - sellFee;
 
       const profit = totalReceived - totalCost;
+      const yieldPercent = (profit / totalCost) * 100;
 
-      document.getElementById("result").textContent = `Profit: ${profit.toFixed(2)} (after fees)`;
-      document.getElementById("breakdown").innerHTML =
-        `Buy: $${totalBuy.toFixed(2)} + Fee: $${buyFee.toFixed(2)} = Total Cost: $${totalCost.toFixed(2)}<br>` +
-        `Sell: $${totalSell.toFixed(2)} - Fee: $${sellFee.toFixed(2)} = Total Received: $${totalReceived.toFixed(2)}`;
+      document.getElementById("result").textContent = `Profit: ${profit.toFixed(2)} (after 0.2% buy & sell fees)`;
+      document.getElementById("breakdown").innerHTML = `
+        <p>Total Buy Cost: ${totalCost.toFixed(2)}</p>
+        <p>Total Sell Value: ${totalReceived.toFixed(2)}</p>
+        <p>Buy Fee: ${buyFee.toFixed(2)}</p>
+        <p>Sell Fee: ${sellFee.toFixed(2)}</p>
+        <p>Yield: ${yieldPercent.toFixed(2)}%</p>
+      `;
     }
   </script>
 </body>
