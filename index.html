@@ -87,8 +87,9 @@
 <body>
   <div class="calculator">
     <h2>FX Profit Calculator</h2>
+    
     <label for="usdAmount">USD Amount:</label>
-    <input type="number" id="usdAmount" placeholder="Enter USD amount" />
+    <input type="number" id="usdAmount" value="1000" min="0" step="1" placeholder="Enter USD amount" />
 
     <label for="buyRate">Buy Rate:</label>
     <input type="number" id="buyRate" placeholder="Enter buy rate" step="0.0001" />
@@ -103,6 +104,13 @@
   </div>
 
   <script>
+    function formatCurrency(value) {
+      return `$${Number(value).toLocaleString(undefined, {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2,
+      })}`;
+    }
+
     function calculateProfit() {
       const usd = parseFloat(document.getElementById("usdAmount").value);
       const buyRate = parseFloat(document.getElementById("buyRate").value);
@@ -126,14 +134,16 @@
 
       const profit = totalReceived - totalCost;
       const yieldPercent = (profit / totalCost) * 100;
+      const gainPerUSD = profit / usd;
 
-      document.getElementById("result").textContent = `Profit: ${profit.toFixed(2)} (after 0.2% buy & sell fees)`;
+      document.getElementById("result").textContent = `Profit: ${formatCurrency(profit)} (after 0.2% buy & sell fees)`;
       document.getElementById("breakdown").innerHTML = `
-        <p>Total Buy Cost: ${totalCost.toFixed(2)}</p>
-        <p>Total Sell Value: ${totalReceived.toFixed(2)}</p>
-        <p>Buy Fee: ${buyFee.toFixed(2)}</p>
-        <p>Sell Fee: ${sellFee.toFixed(2)}</p>
+        <p>Total Buy Cost: ${formatCurrency(totalCost)}</p>
+        <p>Total Sell Value: ${formatCurrency(totalReceived)}</p>
+        <p>Buy Fee: ${formatCurrency(buyFee)}</p>
+        <p>Sell Fee: ${formatCurrency(sellFee)}</p>
         <p>Yield: ${yieldPercent.toFixed(2)}%</p>
+        <p>Profit per USD: ${gainPerUSD.toFixed(4)}</p>
       `;
     }
   </script>
